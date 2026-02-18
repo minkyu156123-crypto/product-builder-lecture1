@@ -1,3 +1,11 @@
+
 {
-  "IDX.agenticWorkspace": true
+    "workbench.colorTheme": "Default Dark+",
+    "editor.minimap.enabled": false,
+    "workbench.startupEditor": "none",
+    "editor.fontSize": 14,
+    "editor.wordWrap": "on",
+    "files.autoSave": "afterDelay",
+    "terminal.integrated.fontSize": 14,
+    "simpleBrowser.show": "show"
 }
