@@ -1,61 +1,49 @@
 const generateBtn = document.getElementById('generate-btn');
-const lottoNumbersContainer = document.querySelector('.lotto-numbers');
+const menuDisplay = document.getElementById('menu-display');
 const themeToggle = document.getElementById('theme-toggle');
 const body = document.body;
+
+// Menu List
+const menus = [
+    '김치찌개', '된장찌개', '비빔밥', '불고기', '제육볶음',
+    '치킨', '피자', '탕수육', '짜장면', '짬뽕',
+    '스테이크', '파스타', '초밥', '라멘', '돈까스',
+    '삼겹살', '곱창', '떡볶이', '보쌈', '족발',
+    '샌드위치', '샐러드', '쌀국수', '마라탕', '훠궈'
+];
 
 // Theme logic
 const savedTheme = localStorage.getItem('theme');
 if (savedTheme === 'dark') {
     body.classList.add('dark-mode');
-    themeToggle.textContent = 'Light Mode';
+    themeToggle.textContent = '라이트 모드';
 }
 
 themeToggle.addEventListener('click', () => {
     body.classList.toggle('dark-mode');
     const isDark = body.classList.contains('dark-mode');
-    themeToggle.textContent = isDark ? 'Light Mode' : 'Dark Mode';
+    themeToggle.textContent = isDark ? '라이트 모드' : '다크 모드';
     localStorage.setItem('theme', isDark ? 'dark' : 'light');
 });
 
-function generateLottoNumbers() {
-    const numbers = new Set();
-    while (numbers.size < 6) {
-        const randomNumber = Math.floor(Math.random() * 45) + 1;
-        numbers.add(randomNumber);
-    }
-    return Array.from(numbers).sort((a, b) => a - b);
+function getRandomMenu() {
+    const randomIndex = Math.floor(Math.random() * menus.length);
+    return menus[randomIndex];
 }
 
-function displayNumbers(numbers) {
-    lottoNumbersContainer.innerHTML = '';
-    for (const number of numbers) {
-        const numberDiv = document.createElement('div');
-        numberDiv.classList.add('lotto-number');
-        numberDiv.textContent = number;
-        numberDiv.style.backgroundColor = getNumberColor(number);
-        lottoNumbersContainer.appendChild(numberDiv);
-    }
-}
-
-function getNumberColor(number) {
-    if (number <= 10) {
-        return '#f9c941'; // yellow
-    } else if (number <= 20) {
-        return '#87ceeb'; // skyblue
-    } else if (number <= 30) {
-        return '#ff7f50'; // coral
-    } else if (number <= 40) {
-        return '#98fb98'; // palegreen
-    } else {
-        return '#d3d3d3'; // lightgray
-    }
+function displayMenu() {
+    menuDisplay.innerHTML = '';
+    const menuName = getRandomMenu();
+    const menuDiv = document.createElement('div');
+    menuDiv.classList.add('menu-item');
+    menuDiv.textContent = menuName;
+    menuDisplay.appendChild(menuDiv);
 }
 
 generateBtn.addEventListener('click', () => {
-    const numbers = generateLottoNumbers();
-    displayNumbers(numbers);
+    // Add a simple "loading" effect
+    menuDisplay.innerHTML = '<p>추천 중...</p>';
+    setTimeout(displayMenu, 300);
 });
 
-// Initial generation
-const initialNumbers = generateLottoNumbers();
-displayNumbers(initialNumbers);
+// Initial display is handled by HTML, but we could also call displayMenu() here if we wanted.
