@@ -47,3 +47,50 @@ generateBtn.addEventListener('click', () => {
 });
 
 // Initial display is handled by HTML, but we could also call displayMenu() here if we wanted.
+
+// Contact Form Handling (AJAX)
+const contactForm = document.getElementById('contact-form');
+const formStatus = document.getElementById('form-status');
+
+if (contactForm) {
+    contactForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const data = new FormData(event.target);
+        const submitBtn = contactForm.querySelector('.submit-btn');
+        
+        // 버튼 비활성화 (중복 제출 방지)
+        submitBtn.disabled = true;
+        submitBtn.textContent = '보내는 중...';
+        formStatus.textContent = '';
+
+        try {
+            const response = await fetch(event.target.action, {
+                method: contactForm.method,
+                body: data,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            });
+
+            if (response.ok) {
+                formStatus.style.color = '#4CAF50';
+                formStatus.textContent = '감사합니다! 문의가 성공적으로 전달되었습니다.';
+                contactForm.reset();
+            } else {
+                const result = await response.json();
+                formStatus.style.color = '#f44336';
+                if (Object.hasOwnProperty.call(result, 'errors')) {
+                    formStatus.textContent = result.errors.map(error => error.message).join(", ");
+                } else {
+                    formStatus.textContent = '앗! 문제가 발생했습니다. 다시 시도해주세요.';
+                }
+            }
+        } catch (error) {
+            formStatus.style.color = '#f44336';
+            formStatus.textContent = '앗! 서버 연결에 실패했습니다. 인터넷을 확인해주세요.';
+        } finally {
+            submitBtn.disabled = false;
+            submitBtn.textContent = '문의 보내기';
+        }
+    });
+}
