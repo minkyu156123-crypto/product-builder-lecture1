@@ -46,6 +46,15 @@ generateBtn.addEventListener('click', () => {
     setTimeout(displayMenu, 300);
 });
 
+// Logo click to top
+const logo = document.querySelector('.logo');
+if (logo) {
+    logo.style.cursor = 'pointer';
+    logo.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+}
+
 // Initial display is handled by HTML, but we could also call displayMenu() here if we wanted.
 
 // Contact Form Handling (AJAX)
